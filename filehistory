@@ -1,0 +1,19 @@
+    1  git clone https://github.com/najzermaria/wsb_pai_dlinz_2_K15_Inf.git
+    2  ls
+    3  cd wsb_pai_dlinz_2_K15_Inf
+    4  ls
+    5  alias c=Clear
+    6  c
+    7  history
+    8  history > filehistory
+    9  ls wsb_pai_dlinz_2_K15_Inf
+   10  cd wsb_pai_dlinz_2_K15_Inf
+   11  cd wsb_pai_dlinz_2_K15_Inf
+   12  git clone https://github.com/najzermaria/wsb_pai_dlinz_2_K15_Inf.git
+   13  history > filehistory
+   14  cd ..
+   15  ls
+   16  cd htdocs/
+   17  git clone https://github.com/najzermaria/wsb_pai_dlinz_2_K15_Inf.git
+   18  cd wsb_pai_dlinz_2_K15_Inf/
+   19  history > filehistory

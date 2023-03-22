@@ -1,6 +1,11 @@
 <?php
    $conn = new mysqli("localhost", "root", "", "wsb");
-  // $sql = "SELECT * FROM `users`;";
+   //echo"db"; 
+    //echo $conn->connect_errno;
+
+
+
+// $sql = "SELECT * FROM `users`;";
   // $result = $conn->query($sql);
    //$user = $result->fetch_assoc();
    //print_r($user);
@@ -16,5 +21,5 @@
         //<hr>
    //USER;
    //}
-   // echo"db"; 
-?>
+
+   ?>

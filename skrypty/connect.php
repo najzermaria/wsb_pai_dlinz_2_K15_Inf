@@ -2,7 +2,7 @@
    $conn = new mysqli("localhost", "root", "", "wsb");
    //echo"db"; 
    //echo $conn->connect_errno;
-
+   //$conn1 = new mysqli("localhost", "root", "", "wsb");
 
 
 // $sql = "SELECT * FROM `users`;";

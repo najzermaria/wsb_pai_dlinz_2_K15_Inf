@@ -66,11 +66,13 @@ USERS;
 } 
     echo "</table>";
     if(isset($_GET["deleteUser"])){}
-    if($_GET["deleteUser"] != 0){
+   /* if($_GET["deleteUser"] != 0){
         echo "<hr>Usunięto użytkownika o id= $_GET[deleteUser]";
     }else{
         echo "<hr>Nie usunięto użytkownika";
     }
+*/
+
     ?>
    
 </body>

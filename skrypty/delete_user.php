@@ -5,6 +5,7 @@ require_once "./connect.php";
 $sql = "DELETE FROM users WHERE `users`.`id` = $_GET[deleteUserId]";
 $conn->query($sql);
 //echo $conn->affected_rows;
+$deleteUser = 0;
 if ($conn->affected_rows != 0) {
     //echo "Usunięto rekord";
     $deleteUser =  $_GET["deleteUserId"];

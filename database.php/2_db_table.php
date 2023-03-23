@@ -28,7 +28,7 @@
         </tr>
 USERSTABLE;
 
-/*if($result->num_rows > 0){
+/*if($result->num_rows < 0){
     while($user = $result->fetch_assoc()){
     echo <<< USERSTABLE
         <tr>

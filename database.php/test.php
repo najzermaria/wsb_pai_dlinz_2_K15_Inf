@@ -11,7 +11,7 @@
     <h4>MIASTA</h4>
     <?php
     require_once "../skrypty/connect.php";
-    $sql = "SELECT city FROM cities";
+    $sql = "SELECT * FROM cities";
     $result = $conn->query($sql);
     echo <<< USERSTABLE
     <table>
@@ -39,26 +39,27 @@ USERSTABLE;
         <td>colspan="6">Brak wyników do wyświetlenia</td>
     </tr>';
 }*/
-if(!$result || mysqli_num_rows($result)== 0){
+//if(isset($_GET["deleteCity"])){}
+    if(!$result || mysqli_num_rows($result)== 0){
     echo '<tr><td colspan="7">Brak wyników</td></tr>';
-}else{
+    }else{
     while($cities = $result->fetch_assoc()){
         echo <<< USERS
         <tr>
             <td>$cities[city]</td>
-            <td><a href="../skrypty/delete_city.php">Usuń</a></td>
+            <td><a href="../skrypty/delete_city.php?deleteCityId=$cities[id]">Usuń</a></td>
         </tr>
     USERS;
-}
-} 
+        }
+    }
     echo "</table>";
-    if(isset($_GET["deleteCity"])){}
+    if(isset($_GET["deleteCity"])){
     if($_GET["deleteCity"] != 0){
         echo "<hr>Usunięto miasto o id= $_GET[deleteCity]";
     }else{
         echo "<hr>Nie usunięto miasta";
     }
-    
+    }
     ?>
    
 

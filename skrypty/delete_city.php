@@ -1,9 +1,8 @@
 <?php
-//echo "delete user";
 
 require_once "./connect.php";
 
-$sql = "DELETE FROM cities WHERE `city`.`id` = $_GET[deleteCityId]";
+$sql = "DELETE FROM cities WHERE `cities`.`id` = $_GET[deleteCityId]";
 try{
 $conn->query($sql);
 

@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +13,11 @@
 <body>
     <h4>Użytkownicy</h4>
     <?php
+    if (isset($_SESSION["error"])){
+        echo $_SESSION["error"];
+        unset($_SESSION["error"]);
+    }
+
     require_once "../skrypty/connect.php";
     $sql = "SELECT u.id, firstName, lastName, city, states, country, birthday FROM users u inner join cities c on c.id = u.city_id
     inner join states s on s.id = c.state_id
@@ -65,15 +73,46 @@ USERS;
     }
 } 
     echo "</table>";
-    if(isset($_GET["deleteUser"])){}
+    if(isset($_GET["deleteUser"])){
     if($_GET["deleteUser"] != 0){
         echo "<hr>Usunięto użytkownika o id= $_GET[deleteUser]";
     }else{
         echo "<hr>Nie usunięto użytkownika";
     }
-
-
+    } 
+    if(isset($_GET["addUserForm"])){
+        echo <<< ADDUSERFORM
+        <h4>Dodawanie użytkownika</h4>
+        <form action="../skrypty/add_user.php" method="post">
+            <input type="text" name="firstName" placeholder="Podaj imię" autofocus><br><br>
+            <input type="text" name="lastName" placeholder="Podaj nazwisko"><br><br><select>
+            
+ADDUSERFORM;
+        // select/option cities
+            $sql = "SELECT * FROM `cities`";
+            $result = $conn->query($sql);
+            // while($row = mysqli_fetch_array($result)){
+            //     echo "<option value='$row[id]'> $row[city]</option>";
+            // }
+            while($city = $result->fetch_assoc()){
+                echo "<option value=""></option>";
+            }
+       
+       
+            
+                echo <<< ADDUSERFORM
+            <input type="date" name="birthday">Data urodzenia<br><br>
+            <input type="submit" value="Dodaj użytkownika">
+        
+        </form>
+        ADDUSERFORM;
+    }else {
+        echo '<hr><a href="./2_db_table.php?addUserForm=1">Dodaj użytkownika</a>';
+    }
+    
     ?>
+
+    
    
 </body>
 </html>

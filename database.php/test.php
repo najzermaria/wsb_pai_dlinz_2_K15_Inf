@@ -16,6 +16,7 @@
     echo <<< USERSTABLE
     <table>
         <tr>
+            <th>Id</th>
             <th>Miasto</th>
         </tr>
 USERSTABLE;
@@ -46,21 +47,21 @@ USERSTABLE;
     while($cities = $result->fetch_assoc()){
         echo <<< USERS
         <tr>
-        <td>$cities[id]</td>
+            <td>$cities[id]</td>
             <td>$cities[city]</td>
-            <td><a href="../skrypty/delete_city.php?deleteCityId=$cities[id]">Usuń</a></td>
+            <td><a href="../skrypty/delete_city.php?deleteCity=$cities[id]">Usuń</a></td>
         </tr>
     USERS;
         }
     } 
     echo "</table>";
-   if(isset($_GET["deleteCityId"])){}
+   if(isset($_GET["deleteCity"])){
     if($_GET["deleteCity"] != 0){
         echo "<hr>Usunięto miasto o id= $_GET[deleteCity]";
     }else{
-        echo "<hr>Nie usunięto miasta";
+        echo "<hr>Nie usunięto miasta o podanym id";
     }
- 
+}
     
     ?>
    

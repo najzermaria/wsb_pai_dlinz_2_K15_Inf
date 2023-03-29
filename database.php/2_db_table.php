@@ -115,7 +115,15 @@ ADDUSERFORM;
     }else {
         echo '<hr><a href="./2_db_table.php?addUserForm=1">Dodaj użytkownika</a>';
     }
-    
+     
+    if(isset($_GET["updateUserId"])){
+        echo <<< UPDATEUSERFORM
+        <h4>Aktualizacja użytkownika</h4>
+        UPDATEUSERFORM;
+    }
+
+
+
     ?>
 
     

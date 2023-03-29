@@ -33,6 +33,7 @@
             <th>Województwo</th>
             <th>Państwo</th>
            <th></th>
+           <th></th>
         </tr>
 USERSTABLE;
 
@@ -68,6 +69,8 @@ if(!$result || mysqli_num_rows($result)== 0){
             <td>$user[states]</td>  
             <td>$user[country]</td>
             <td><a href="../skrypty/delete_user.php?deleteUserId=$user[id]">Usuń</a></td>
+            <td><a href="./2_db_table.php?updateUserId=$user[id]">Edytuj</a></td>
+            
         </tr>
 USERS;
     }
@@ -85,7 +88,9 @@ USERS;
         <h4>Dodawanie użytkownika</h4>
         <form action="../skrypty/add_user.php" method="post">
             <input type="text" name="firstName" placeholder="Podaj imię" autofocus><br><br>
-            <input type="text" name="lastName" placeholder="Podaj nazwisko"><br><br><select>
+            <input type="text" name="lastName" placeholder="Podaj nazwisko"><br><br>
+            <select name="city_id">
+            
             
 ADDUSERFORM;
         // select/option cities
@@ -95,12 +100,13 @@ ADDUSERFORM;
             //     echo "<option value='$row[id]'> $row[city]</option>";
             // }
             while($city = $result->fetch_assoc()){
-                echo "<option value=""></option>";
+                echo "<option value=\"$city[id]\">$city[city]</option>";
             }
        
        
             
                 echo <<< ADDUSERFORM
+                </select><br><br>
             <input type="date" name="birthday">Data urodzenia<br><br>
             <input type="submit" value="Dodaj użytkownika">
         

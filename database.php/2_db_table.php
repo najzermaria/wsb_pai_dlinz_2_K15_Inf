@@ -108,7 +108,9 @@ ADDUSERFORM;
                 echo <<< ADDUSERFORM
                 </select><br><br>
             <input type="date" name="birthday">Data urodzenia<br><br>
+            <input type="checkbox" name="term" checked> Regulamin<br><br>
             <input type="submit" value="Dodaj użytkownika">
+            
         
         </form>
         ADDUSERFORM;
@@ -116,12 +118,48 @@ ADDUSERFORM;
         echo '<hr><a href="./2_db_table.php?addUserForm=1">Dodaj użytkownika</a>';
     }
      
+
+
+
+// aktualizacja uzytkownika
+
     if(isset($_GET["updateUserId"])){
+        $sql= "SELECT * from users where id= $_GET[updateUserId]";
+        $result = $conn->query($sql);
+        $updateUser = $result->fetch_assoc();
+        $_SESSION["updateUserId"] = $_GET["updateUserId"];
         echo <<< UPDATEUSERFORM
         <h4>Aktualizacja użytkownika</h4>
-        UPDATEUSERFORM;
-    }
+        <form action="../skrypty/update_user.php" method="post">
+            <input type="text" name="firstName" placeholder="Podaj imię" value="$updateUser[firstName]" autofocus><br><br>
+            <input type="text" name="lastName" placeholder="Podaj nazwisko" value=$updateUser[lastName]><br><br>
+            <select name="city_id">
+    UPDATEUSERFORM;
 
+    $sql = "SELECT * FROM `cities`";
+    $result = $conn->query($sql);
+    // while($row = mysqli_fetch_array($result)){
+    //     echo "<option value='$row[id]'> $row[city]</option>";
+    // }
+        while($city = $result->fetch_assoc()){
+            if ($updateUser["city_id"]==$city["id"]){
+                echo "<option selected value=\"$city[id]\">$city[city]</option>";
+            } else {
+            echo "<option value=\"$city[id]\">$city[city]</option>";
+            }
+        }
+
+
+
+        echo <<< UPDATEUSERFORM
+        </select><br><br>
+    <input type="date" name="birthday" value="$updateUser[birthday]">Data urodzenia<br><br>
+    <input type="submit" value="Aktualizuj użytkownika">
+
+    </form>
+    UPDATEUSERFORM;
+    }
+       $conn->close();
 
 
     ?>

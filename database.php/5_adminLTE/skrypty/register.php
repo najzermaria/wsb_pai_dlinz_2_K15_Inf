@@ -1,7 +1,7 @@
 <?php
-echo "<pre>";
-print_r($_POST);
-echo"</pre>";
+// echo "<pre>";
+// print_r($_POST);
+// echo"</pre>";
 
 
 require_once "./connect.php";
@@ -12,5 +12,7 @@ require_once "./connect.php";
     $stmt->execute();
 
 	echo $stmt->affected_rows;
+
+	//echo password_hash("rasmuslerdorf", PASSWORD_DEFAULT);
 
 ?>

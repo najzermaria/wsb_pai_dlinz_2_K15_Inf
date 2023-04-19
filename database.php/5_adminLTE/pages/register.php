@@ -37,9 +37,9 @@ if(isset($_SESSION["success"])){
 
   <div class="alert alert-success alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h5><i class="icon fas fa-ban"></i> Komunikat</h5>
+                  <h5><i class="icon fas fa-check"></i> Komunikat</h5>
        $_SESSION[success]
-    </div>
+    </div>   
 ERROR;
 unset($_SESSION["success"]);
 }

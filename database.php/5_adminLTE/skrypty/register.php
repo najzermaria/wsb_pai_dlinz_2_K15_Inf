@@ -28,21 +28,51 @@ session_start();
 		$error =1;
 		$_SESSION["error"] = "Hasła są różne";
 	}
-	// mail
+	// email
 	if($_POST["email1"] != $_POST["email2"]){
 		$error =1;
 		$_SESSION["error"] = "Adresy email są różne";
 	}
+	// email duplikat
+	if($_POST["email1"] = $sql = "SELECT * FROM `users` WHERE email = $_POST[email1]"){
+		$error =1;
+		$_SESSION["error"] = "Adres email jest już używany";
+	}
+
+	// $sql = "SELECT * FROM `users` WHERE email = $_POST[email1]";
+	// $conn->query($sql);
 	
-		
+	// if( $conn->affected_rows ==1){
+	// 	//echo "Prawidłowo dodano rekord";
+	// 	$_SESSION["error"]="Prawidłowo dodano rekord";
+	// }else{
+	// 	//echo "Nie dodano rekordu";
+	// 	$_SESSION["error"]="Nie dodano rekordu";
+	// }
+
+
+	// $sql= "SELECT id from users where email = $_POST[email1]";
+	// $result = mysqli_query($sql);
+	// if(mysqli_num_rows($result) >0){
+	// 	$_SESSION["error"] = "Adres email jest już używany";
+	// }
+
+
+	if($_POST["email1"] = $_POST["email1"]){
+		$error =1;
+		$_SESSION["error"] = "Adres email jest już używany";
+	}
+
+
+	
 	if($error != 0){
 			echo "<script>history.back();</script>";
 		exit();
-		}
+	}
+
+
+
 	
-// duplikacja maila!!!!!!
-
-
 
 require_once "./connect.php";
 	$stmt = $conn->prepare("INSERT INTO users (`email`, `city_id`, `firstName`, `lastName`, `birthday`, `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, current_timestamp());");
@@ -55,7 +85,7 @@ require_once "./connect.php";
 
 	echo $stmt->affected_rows;
 
-	
+
 
 	//echo password_hash("rasmuslerdorf", PASSWORD_DEFAULT);
 

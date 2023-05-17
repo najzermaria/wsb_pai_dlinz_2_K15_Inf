@@ -1,43 +1,100 @@
 <?php
-echo "<pre>";
+
+function sanitizeInput(&$input){
+	$input = trim($input);
+	$input = stripslashes($input);
+	$input = htmlentities($input);
+	return $input;
+}
+//$_POST["firstName"]= sanitizeInput($_POST["firstName"]);
+echo $_POST["firstName"]." ==> ".sanitizeInput($_POST["firstName"]).", ilość znaków:".strlen($_POST["firstName"]);
+
+exit();
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+/*echo "<pre>";
 print_r($_POST);
-echo"</pre>";
-
-session_start();
+echo"</pre>";*/
 
 
-	foreach($_POST as $key => $value){
-	
-		if (empty($value)){
-			$_SESSION["error"] = "Wypełnij wszystkie pola!";
-			echo $_SESSION["error"];
-			echo "<script>history.back();</script>";
-			exit();
+$required_fields=["firstName", "lastName", "email1", "email2", "pass1", "pass2", "birthday", "city_id", "gender"];
+
+// foreach($required_fields as $key => $value){
+// 	echo "$key: $value<br>";
+// }
+// exit();
+
+
+
+	session_start();
+
+
+	// foreach($_POST as $key => $value){
+	// if (empty($value)){
+	// 		$_SESSION["error"] = "Wypełnij wszystkie pola!";
+	// 		echo $_SESSION["error"];
+	// 		echo "<script>history.back();</script>";
+	// 		exit();
+	// 	}
+	// }
+
+	$errors= [];
+	foreach($required_fields as $value){
+		if (empty($_POST[$value])){
+				$errors[] = "Pole <b> $value</b> jest wymagane!";
+			}
 		}
-	}
+	if(!empty($errors)){
+			$_SESSION["error"] = implode("<br>", $errors);
+			//echo "<script>history.back();</script>";
+		}
 
-	$error = 0;
+
+	// 	foreach($required_fields as $value){
+	// if (empty($_POST[$value])){
+	// 		$_SESSION["error"] = "Wypełnij wszystkie pola!";
+	// 		echo $_SESSION["error"];
+	// 		echo "<script>history.back();</script>";
+	// 		exit();
+	// 	}
+	// }
+
+	//$error = 0;
 	
-	//regulamin
-	if (!isset($_POST["terms"])){
-		$error = 1;
-		$_SESSION["error"] = "Zatwierdź regulamin!";
+	
+	// email
+	if($_POST["email1"] != $_POST["email2"]){
+		$errors[]  = "Adresy email są różne";
 	}
-	if (!isset($_POST["gender"])){
-		$error = 1;
-		$_SESSION["error"] = "Zaznacz płeć!";
+	//dodatkowy email
+	if($_POST["additional_email1"] != $_POST["additional_email2"]){
+		$errors[] = "Doadatkowe adresy email są różne";
+	}else{
+		if(empty($_POST["additional_email1"])){
+			$_POST["additional_email1"] = NULL;
+		}
 	}
 	// hasło
 	if($_POST["pass1"] != $_POST["pass2"]){
-		$error =1;
-		$_SESSION["error"] = "Hasła są różne";
+		$errors[]  = "Hasła są różne";
+	}else{
+		//walidacja hasła
+		if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])\S{8,}$/', $_POST["pass1"])) {
+			$errors[]  = "Hasło nie spełnia wymagań!";
+			// echo $_SESSION["error"];
+		}
 	}
-	// email
-	if($_POST["email1"] != $_POST["email2"]){
-		$error =1;
-		$_SESSION["error"] = "Adresy email są różne";
+	//plec
+	if (!isset($_POST["gender"])){
+		$errors[]  = "Zaznacz płeć!";
 	}
-
+	//regulamin
+	if (!isset($_POST["terms"])){
+		$errors[] = "Zatwierdź regulamin!";
+	}
+	// echo "x:";
+	// print_r($errors);
+	//exit();
 
 	// $sql= "SELECT id from users where email = $_POST[email1]";
 	// $result = mysqli_query($sql);
@@ -57,14 +114,12 @@ session_start();
 // $_SESSION["error"] = "Hasło nie spełnia wymagań!";
 //}
 	
-	if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])\S{8,}$/', $_POST["pass1"])) {
-		$error = 1;
-		$_SESSION["error"] = "Hasło nie spełnia wymagań!";
-	}
-
 	
-	if($error != 0){
-			echo "<script>history.back();</script>";
+	
+	if(!empty($errors)){
+		$_SESSION["error"] = implode ("<br>", $errors);
+		//print_r($_SESSION["error"]);
+		echo "<script>history.back();</script>";
 		exit();
 	}
 
@@ -84,11 +139,16 @@ session_start();
 		exit();
 	}
 	
+	foreach($_POST as $key => $value){
+		if (!$_POST["pass1"] && !$_POST["pass2"]){
+			sanitizeInput($_POST["$key"]);
+		}
+	}
 
 
 //hasowanie hasla
 require_once "./connect.php";
-	$stmt = $conn->prepare("INSERT INTO users (`email`, `city_id`, `firstName`, `lastName`, `birthday`, `gender`, `awatar`,  `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?,?, ?, current_timestamp());");
+	$stmt = $conn->prepare("INSERT INTO users (`email`, `additional_email`, `city_id`, `firstName`, `lastName`, `birthday`, `gender`, `awatar`,  `password`, `created_at`) VALUES (?,?, ?, ?, ?, ?, ?,?, ?, current_timestamp());");
 
 	$pass = password_hash('$_POST["pass1"]', algo: PASSWORD_ARGON2ID);
 
@@ -100,7 +160,7 @@ require_once "./connect.php";
 	// 	$awatar='men.jpg';
 	// }
 
-	$stmt->bind_param('sissssss', $_POST["email1"], $_POST["city_id"], $_POST["firstName"], $_POST["lastName"], $_POST["birthday"], $_POST["gender"], $awatar, $pass);
+	$stmt->bind_param('ssissssss', $_POST["email1"], $_POST["additional_email1"], $_POST["city_id"], $_POST["firstName"], $_POST["lastName"], $_POST["birthday"], $_POST["gender"], $awatar, $pass);
 
 
 
@@ -116,7 +176,11 @@ require_once "./connect.php";
 		$_SESSION["error"] = "Nie udało się dodać rekordu!";
 	}
 
-	//header("location: ../pages/register.php");
+}
+
+
+
+	header("location: ../pages/register.php");
 
 ?>
 

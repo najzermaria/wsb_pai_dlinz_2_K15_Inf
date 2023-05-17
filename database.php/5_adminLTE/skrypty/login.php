@@ -16,8 +16,9 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
         // pole pass jest wymagane
     } //$_SESSION["error"] = $errors;
 
-    
+    //print_r($errors);
     //echo $error_message;
+
     if(!empty($errors)){
         $error_message = implode("<br>", $errors);
         header("location: ../pages/index.php?error=".urlencode($error_message));
@@ -25,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
     }
 
     echo "email: ".$_POST["email"].", hasło: ".$_POST["pass"]."<br>";
+    
 
 
     echo htmlentities($_POST["email"]);

@@ -7,9 +7,9 @@ function sanitizeInput(&$input){
 	return $input;
 }
 //$_POST["firstName"]= sanitizeInput($_POST["firstName"]);
-echo $_POST["firstName"]." ==> ".sanitizeInput($_POST["firstName"]).", ilość znaków:".strlen($_POST["firstName"]);
+//echo $_POST["firstName"]." ==> ".sanitizeInput($_POST["firstName"]).", ilość znaków:".strlen($_POST["firstName"]);
 
-exit();
+//exit();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 /*echo "<pre>";
@@ -138,19 +138,19 @@ $required_fields=["firstName", "lastName", "email1", "email2", "pass1", "pass2",
 		echo "<script>history.back();</script>";
 		exit();
 	}
-	
-	foreach($_POST as $key => $value){
-		if (!$_POST["pass1"] && !$_POST["pass2"]){
-			sanitizeInput($_POST["$key"]);
-		}
-	}
+	//sanityzacja kodu
+	// foreach($_POST as $key => $value){
+	// 	if (!$_POST["pass1"] && !$_POST["pass2"]){
+	// 		sanitizeInput($_POST["$key"]);
+	// 	}
+	// }
 
 
 //hasowanie hasla
 require_once "./connect.php";
 	$stmt = $conn->prepare("INSERT INTO users (`email`, `additional_email`, `city_id`, `firstName`, `lastName`, `birthday`, `gender`, `awatar`,  `password`, `created_at`) VALUES (?,?, ?, ?, ?, ?, ?,?, ?, current_timestamp());");
 
-	$pass = password_hash('$_POST["pass1"]', algo: PASSWORD_ARGON2ID);
+	$pass = password_hash($_POST["pass1"], PASSWORD_ARGON2ID);
 
 	$awatar = ($_POST["gender"] == 'm') ? '/jpg/man.png' : './jpg/woman.png';
 
@@ -171,7 +171,8 @@ require_once "./connect.php";
 
 	if($stmt->affected_rows == 1){
 		$_SESSION["success"] = "Dodano użytkownika! $_POST[firstName] $_POST[lastName]";
-		
+		header("location: ../pages");
+		exit();
 	}else{
 		$_SESSION["error"] = "Nie udało się dodać rekordu!";
 	}
